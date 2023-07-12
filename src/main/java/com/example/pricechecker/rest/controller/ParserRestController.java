@@ -1,11 +1,9 @@
 package com.example.pricechecker.rest.controller;
 
-import com.example.pricechecker.service.impl.ParserServiceImpl;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,10 +18,10 @@ public class ParserRestController {
 
     @GetMapping("parser")
     public List<String> parser() throws IOException {
-        return getMainPageLabint();
+        return getBooksChitaiGorod();
     }
 
-    public List<String> getMainPageLabint() throws IOException {
+    public List<String> getBooksLabint() throws IOException {
         List<String> itemsList = new ArrayList<>();
 
         Document document = Jsoup.connect("https://www.labirint.ru/books/")
@@ -44,10 +42,10 @@ public class ParserRestController {
         return itemsList;
     }
 
-    public List<String> getMainPageChitaiGorod() throws IOException {
+    public List<String> getBooksChitaiGorod() throws IOException {
         List<String> itemsList = new ArrayList<>();
 
-        Document document = Jsoup.connect("https://www.chitai-gorod.ru")
+        Document document = Jsoup.connect("https://www.chitai-gorod.ru/catalog/books-18030")
                 .userAgent("Chrome/4.0.249.0")
                 .referrer("https://www.google.com")
                 .get();
@@ -59,7 +57,7 @@ public class ParserRestController {
             String oldPrice = element.getElementsByClass("product-price__old").text();
             String newPrice = element.getElementsByClass("product-price__value").text();
             String author = element.getElementsByClass("product-title__author").text();
-            String posterPicture = element.select("img").attr("data-src");
+            String posterPicture = element.getElementsByClass("product-picture__img").attr("data-src");
             itemsList.add(name + " Старая цена: " + oldPrice + " Новая цена: " + newPrice + " Автор: " + author + " Картинка " + posterPicture);
         }
         return itemsList;
