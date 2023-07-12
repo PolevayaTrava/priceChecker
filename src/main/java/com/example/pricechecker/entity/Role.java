@@ -1,6 +1,5 @@
 package com.example.pricechecker.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
